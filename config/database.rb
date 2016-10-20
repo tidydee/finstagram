@@ -6,7 +6,7 @@ configure do
 
   # set :database, {
   #   adapter: "sqlite3",
-  #   database: "postgres://ltkgimpngchnga:kOnqWv2xb5FJNj5zh-InPBGk7l@ec2-50-17-255-49.compute-1.amazonaws.com:5432/d6dqhgh7pu1go"
+  #   database: "db/db.sqlite3"
   #   #database: "db/db.sqlite3"
   # }
   
