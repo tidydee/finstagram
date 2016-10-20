@@ -8,6 +8,26 @@
         <title>Finstagram App Tut</title>
     </head>
     <body>
-        <%= yield %>
+        <header>
+          <h1>
+            <a href="/">Finstagram</a>
+            </h1>
+          <div class="login-info">
+            <% if current_user %>
+              <%= current_user.username %>
+              <a href="/logout">Logout</a>
+            <% else %>
+              <a href="/login">Login</a>
+              <a href="/signup">Signup</a>
+            <% end %>
+          </div>
+        </header>
+        <main role="main">
+            <%= yield %>
+        </main>
+        
+        <!--<script src="http://code.jquery.com/jquery-3.1.1.js" integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA=" crossorigin="anonymous"></script>-->
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="/js/main.js"></script>
     </body>
 </html>

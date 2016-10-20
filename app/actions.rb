@@ -3,13 +3,28 @@ helpers do
   def current_user
     User.find_by({id: session[:user_id]})
   end
+  
+  def logged_in?
+    current_user ? current_user : nil
+    #if current_user != nil
+    # current_user
+    #end
+  end
 end
 
+#before filters
+before '/posts/new' do
+  redirect '/login' unless logged_in?
+end
+
+#homepage route
 get '/' do
   @posts = Post.order(created_at: :desc)
   erb(:index)
 end
 
+
+#users routes
 get '/login' do
   erb(:login)
 end
@@ -68,4 +83,58 @@ post '/signup' do
   else
     erb(:signup)
   end
+end
+
+
+#posts routes
+get '/posts/new' do
+  @post = Post.new()
+  erb(:'posts/new')
+end
+
+post '/posts' do
+  photo_url = params[:photo_url]
+  
+  @post = Post.new({photo_url: photo_url, user_id: current_user.id})
+  
+  if @post.save
+    redirect to('/')
+  else
+    erb(:"posts/new")
+  end
+end
+
+get '/posts/:id' do
+  @post = Post.find(params[:id])
+  erb(:"posts/show")
+end
+
+#comments route
+post '/comments' do
+  params.to_s
+  text = params[:text]
+  post_id = params[:post_id]
+  
+  comment = Comment.new(text: text, post_id: post_id, user_id: current_user.id)
+  
+  comment.save
+  
+  redirect(back)
+end
+
+#likes route
+post '/likes' do
+  post_id = params[:post_id]
+  
+  like = Like.new(post_id: post_id, user_id: current_user.id)
+  
+  like.save
+  
+  redirect(back)
+end
+
+delete '/likes/:id' do
+  like = Like.find_by(params[:id])
+  like.destroy
+  redirect(back)
 end
